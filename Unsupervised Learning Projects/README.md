@@ -1,5 +1,6 @@
 # Unsupervised Learning Portfolio
-<img width="1280" height="720" alt="Unsupervised Learning Portfolio" src="https://github.com/user-attachments/assets/14b75ad6-4dd5-4164-a9ce-903088e39de3" />
+<img width="1280" height="720" alt="Unsupervised Learning Portfolio" src="https://github.com/user-attachments/assets/245ab235-f647-404a-a7f2-e3933bf8832a" />
+
 
 This section showcases applied unsupervised learning projects focused on discovering hidden patterns, segmenting complex datasets, and identifying anomalies without labeled targets.
 
