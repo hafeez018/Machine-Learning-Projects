@@ -1,6 +1,6 @@
 
 # Supervised Learning Portfolio
-<img width="1280" height="720" alt="Supervised Learning Portfolio" src="https://github.com/user-attachments/assets/a8bbd23b-c946-4180-937e-112ded18014f" />
+<img width="1280" height="720" alt="Supervised Learning Portfolio" src="https://github.com/user-attachments/assets/2e6a58a5-5473-4e19-a0dd-506875b1cd12" />
 
 This section showcases applied supervised learning projects spanning classification, regression, forecasting, and NLP. The work is designed to reflect a practical understanding of how data science is used to solve business and operational problems across industries.
 
