@@ -1,5 +1,6 @@
 # Applied Machine Learning Portfolio
-<img width="1280" height="720" alt="Applied Machine Learning Portfolio" src="https://github.com/user-attachments/assets/0fddb3b6-4de7-4e40-b4c6-154186f4cc67" />
+<img width="1280" height="720" alt="Applied Machine Learning Portfolio" src="https://github.com/user-attachments/assets/86fc8d02-0cfa-491b-908d-db30e7404cfc" />
+
 
 A curated portfolio of data science and AI projects focused on solving practical business problems using supervised and unsupervised machine learning.
 
