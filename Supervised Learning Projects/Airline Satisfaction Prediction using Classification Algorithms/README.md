@@ -1,96 +1,130 @@
-# ✈️ Airline Satisfaction Prediction using Classification Algorithms
+# ✈️ Airline Passenger Satisfaction Prediction
 
-A machine learning project aimed at predicting passenger satisfaction on airlines by leveraging classification models, feature engineering, and airline‐survey data.
+Predicting whether an airline passenger is **satisfied** or **neutral/dissatisfied** from survey ratings and flight details, and finding out which parts of the travel experience matter most. A tuned Random Forest reaches **96.1% accuracy, 0.956 F1 and 0.994 ROC-AUC** on a separate held-out test set.
+
+---
+
+## 📊 Results
+
+**Held-out test set** (`test.csv`, 25,976 passengers, scored once at the end):
+
+| Model | Accuracy | F1 | ROC-AUC |
+|---|---|---|---|
+| Majority-class baseline | 56.1% | 0.000 | 0.500 |
+| **Random Forest (final model)** | **96.14%** | **0.956** | **0.994** |
+
+**Validation set** (20% of `train.csv`, used to choose between models):
+
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC |
+|---|---|---|---|---|---|
+| Majority-class baseline | 56.7% | n/a | 0.000 | 0.000 | 0.500 |
+| Decision Tree | 93.51% | 0.922 | 0.929 | 0.925 | 0.984 |
+| Random Forest | 96.13% | 0.965 | 0.945 | 0.955 | 0.994 |
+
+Best hyperparameters (5-fold stratified `GridSearchCV` on the training split):
+
+* Decision Tree: `max_depth=8`, `min_samples_leaf=4`, `min_samples_split=2` (CV accuracy 0.938)
+* Random Forest: `n_estimators=200`, `max_depth=None`, `max_features='sqrt'` (CV accuracy 0.962)
 
 ---
 
 ## 📌 Project Overview
 
-This project delivers a full pipeline for churn-style classification: loading and preprocessing airline survey data, exploring passenger behavior and flight attributes, crafting meaningful features, training classification models, and evaluating their performance. The objective is to understand what drives passenger satisfaction and build a model to predict whether a passenger is satisfied or not.
+Airlines collect post-flight surveys, but turning ratings into decisions needs a model that shows *which* factors drive satisfaction. This project builds a classification pipeline on a public airline passenger survey dataset:
+
+* **Training data:** 103,904 passengers, 22 features (demographics, trip type, flight distance, delays and 14 service ratings)
+* **Held-out test data:** 25,976 passengers, kept untouched until the final evaluation
+* **Target:** `satisfied` (43.3%) vs `neutral or dissatisfied` (56.7%)
 
 ---
 
 ## 🧰 Tech Stack
 
 * **Language:** Python
-* **Libraries:** pandas, numpy, matplotlib, seaborn, scikit-learn
-* **Environment:** Jupyter Notebook / Google Colab
+* **Libraries:** pandas, NumPy, Matplotlib, Seaborn, scikit-learn, SHAP
+* **Environment:** Jupyter Notebook
 
 ---
 
-## 🔄 Workflow Summary
+## 🔄 Workflow
 
-### 1. Data Collection
+### 1. Exploratory Data Analysis
+* Satisfaction by gender, customer type, type of travel and class (counts and proportions)
+* Distributions of the 14 service ratings (pie charts) and of age, flight distance and delays (box, violin and histogram plots)
+* Departure vs arrival delay scatter plot, missing-value check and correlation heatmap
+* IQR outlier check on the numeric columns. Rows are kept: tree models are not sensitive to outliers, and flights with long delays are real cases the model should learn from
 
-Survey data capturing passenger ratings and flight attributes (e.g., airline, class, delay, service quality, and whether the passenger was satisfied).
+### 2. Preprocessing
+* Dropped the index and `id` columns
+* Encoded categories with fixed mappings: binary columns for gender, customer type and type of travel, and an ordered encoding for class (Eco < Eco Plus < Business)
+* `Arrival Delay in Minutes` (0.3% missing) imputed with the **training-set median**
+* Stratified 80/20 split of `train.csv` into training and validation sets
+* Class imbalance (57/43) handled with `class_weight='balanced'`
 
-### 2. Exploratory Data Analysis (EDA)
+All preprocessing is fitted on the training split only, and the official `test.csv` is used once, at the very end.
 
-* Distribution of satisfaction vs. dissatisfaction
-* Relationship between flight attributes (e.g., class, delay, seat comfort) and satisfaction
-* Correlation heatmaps and feature distributions
-* Identification of key patterns and anomalies
+### 3. Modeling
+* **Decision Tree** with `GridSearchCV` (72 parameter combinations, 5-fold stratified CV)
+* **Random Forest** with `GridSearchCV` (12 parameter combinations, 5-fold stratified CV)
+* **Majority-class baseline** (`DummyClassifier`) for reference
 
-### 3. Feature Engineering
+### 4. Evaluation
+Accuracy, precision, recall, F1, Jaccard score, log loss, ROC-AUC, confusion matrices and ROC curves, first on the validation set and then once on the held-out test set.
 
-* Encoding categorical features (e.g., airline, class)
-* Creating derived features such as delay bins, travel type categories
-* Scaling numerical features where needed for model compatibility
-* Splitting into training and test sets ensuring stratified sampling
-
-### 4. Modeling
-
-Classification algorithms applied:
-
-* **Logistic Regression** (baseline model)
-* **Random Forest Classifier** (strong performer)
-* **(Optionally) Gradient Boosting / XGBoost** for enhancement
-
-### 5. Evaluation
-
-Metrics used to measure model performance:
-
-* Accuracy
-* Precision, Recall, F1-Score
-* Confusion Matrix
-* ROC-AUC
-
-**Result:** The Random Forest (or ensemble) classifier achieved the best performance in predicting passenger satisfaction, driven by engineered features like delay and service ratings.
-
-### 6. Prediction & Insights
-
-* Generated predictions on unseen data to classify passenger satisfaction
-* Derived feature importance to interpret which flight aspects most impact satisfaction
-* Provided recommendations for airline service improvements based on findings
+### 5. Interpretation
+Random Forest feature importance and SHAP values (Decision Tree) show which features push a prediction towards "satisfied".
 
 ---
 
-## 📁 Project Structure
+## 🔍 Key Findings
+
+* **Top drivers (Random Forest importance):** online boarding, in-flight wifi service, type of travel, class and in-flight entertainment, followed by seat comfort and leg room.
+* **Direction of the effect (SHAP):** high online-boarding and wifi ratings, business travel, higher cabin class and loyal-customer status push predictions towards "satisfied". Personal-travel and disloyal-customer passengers are more likely to be neutral or dissatisfied.
+* **Large gaps between segments (training data):** only 10% of personal-travel passengers are satisfied versus 58% of business travellers, and 19% of Economy passengers versus 69% in Business class.
+* **Delays matter less than service quality.** About 14% of passengers have a departure delay above 30 minutes, and their satisfaction rate is 36% against 43% overall. Delay columns rank low in both importance charts.
+* **Random Forest beats the single Decision Tree** by about 2.6 accuracy points and 0.03 F1 on the validation set, and holds the same level on unseen test data (96.1%).
+
+### Suggested actions for an airline
+* Improve the **online boarding** experience and **in-flight wifi**: they are the two most influential service factors.
+* Look at the **personal-travel and Economy** segments, where satisfaction is lowest (10% and 19%).
+* Use the model to flag low-satisfaction trip profiles from survey data early.
+
+---
+
+## ⚠️ Limitations
+
+* One survey dataset from a single source. Results should not be assumed to hold for other airlines or periods.
+* The ratings are collected after the flight, so the model explains satisfaction rather than predicting it before the flight.
+* No probability calibration, threshold tuning or fairness analysis across passenger groups has been done.
+
+---
+
+## 📁 Repository Structure
 
 ```
 Airline-Satisfaction-Prediction/
-│── data/
-│── notebooks/
-│── src/
+│── Airline_Satisfaction_Prediction_Code.ipynb   # full analysis: EDA, preprocessing, modeling, evaluation
+│── train.csv                                    # training data (103,904 rows)
+│── test.csv                                     # held-out test data (25,976 rows)
 │── README.md
-│── requirements.txt
 ```
 
 ---
 
-## 📈 Key Findings
+## 🚀 How to Run
 
-* Significant delay and limited seat comfort strongly correlate with dissatisfaction
-* Service-related features (e.g., in-flight service rating) deliver high predictive power
-* Categorical features like travel class and airline type influence satisfaction once encoded properly
-* Feature engineering boosts classifier performance compared to using raw data only
+```bash
+pip install pandas numpy matplotlib seaborn scikit-learn shap jupyter
+jupyter notebook Airline_Satisfaction_Prediction_Code.ipynb
+```
+
+Keep `train.csv` and `test.csv` in the same folder as the notebook. Running every cell takes roughly 10 to 15 minutes, mostly for the Random Forest grid search.
 
 ---
 
-## 🚀 Future Improvements
+## 🔮 Future Improvements
 
-* Incorporate advanced models such as Deep Learning (e.g., neural networks)
-* Use cross-validation pipelines and hyperparameter tuning (GridSearch / RandomSearch)
-* Deploy model via a web app (Flask / Streamlit) for real-time satisfaction prediction
-* Enhance dataset with external factors (e.g., weather, flight route, seasonality)
-* Perform A/B testing or live prediction on actual passenger feedback data
+* Try gradient boosting (XGBoost or LightGBM) and compare against Random Forest
+* Calibrate predicted probabilities and tune the decision threshold
+* Check performance across passenger segments (class, customer type, travel type)
+* Wrap the final model in a small Streamlit app for interactive predictions
