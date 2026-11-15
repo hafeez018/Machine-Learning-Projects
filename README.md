@@ -71,6 +71,7 @@ This portfolio shows that I can:
 
 These projects reflect the strongest examples of applied machine learning in this portfolio:
 
+- [Airline Satisfaction Prediction using Classification Algorithms](Supervised%20Learning%20Projects/Airline%20Satisfaction%20Prediction%20using%20Classification%20Algorithms/)
 - [Customer Churn Analysis using Classification Algorithms](Supervised%20Learning%20Projects/Customer%20Churn%20Analysis%20using%20Classification%20Algorithms/)
 - [Vehicle Insurance Claim Fraud Detection using Classification Algorithms](Supervised%20Learning%20Projects/Vehicle%20Insurance%20Claim%20Fraud%20Detection%20using%20Classification%20Algorithms/)
 - [Fake News Detection with NLP](Supervised%20Learning%20Projects/Fake%20News%20Detection%20with%20NLP/)
