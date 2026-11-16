@@ -72,8 +72,9 @@ This portfolio shows that I can:
 These projects reflect the strongest examples of applied machine learning in this portfolio:
 
 - [Airline Satisfaction Prediction using Classification Algorithms](Supervised%20Learning%20Projects/Airline%20Satisfaction%20Prediction%20using%20Classification%20Algorithms/)
+- [LLM Token Cost Anomaly Detection](Unsupervised%20Learning%20Projects/LLM%20Token%20Cost%20Anomaly%20Detection/)
+- [RAG Document Chunk Clustering](Unsupervised%20Learning%20Projects/RAG%20Document%20Chunk%20Clustering)
 - [Customer Churn Analysis using Classification Algorithms](Supervised%20Learning%20Projects/Customer%20Churn%20Analysis%20using%20Classification%20Algorithms/)
-
 - [Fake News Detection with NLP](Supervised%20Learning%20Projects/Fake%20News%20Detection%20with%20NLP/)
 - [Cybersecurity Network Traffic Anomaly Detection](Unsupervised%20Learning%20Projects/Cybersecurity%20Network%20Traffic%20Anomaly%20Detection/)
 - [Customer Segmentation Using Clustering Techniques](Unsupervised%20Learning%20Projects/Customer%20Segmentation%20Using%20Clustering%20Techniques/)
