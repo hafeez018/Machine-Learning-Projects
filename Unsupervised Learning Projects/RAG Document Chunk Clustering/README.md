@@ -18,7 +18,12 @@ The project demonstrates how patterns, similarities, communities, or anomalies c
 A deterministic domain-shaped text corpus is generated inside the notebook. Hidden generator topics are used only for post-hoc diagnostics.
 
 The notebook documents its data contract, reproducible seed, quality checks, and any synthetic proxy labels used only for retrospective diagnostics.
+## Key Results
 
+- **Corpus Representation:** Vectorized **300 document chunks** into a **300 × 500** sparse matrix using sublinear TF-IDF (`ngram_range=(1, 2)`, `min_df=2`)[cite: 4].
+- **Optimal Cluster Selection:** Swept `k = 2` to `6` using cosine Silhouette Score, identifying **`k = 4`** as optimal (**0.1421** peak cosine silhouette, **240.64** inertia)[cite: 4].
+- **Stability & Retrospective Alignment:** Achieved **1.0000 Adjusted Rand Index (ARI)** across independent random seeds (`random_state=42` vs. `7`) and against hidden ground-truth topic partitions (`access_control`, `data_pipeline`, `model_serving`, `evaluation`)[cite: 4].
+- **Query Routing & Retrieval:** Verified cosine-similarity inference by routing incoming text probes to the target cluster and retrieving the **top-5 nearest context chunks** (up to **0.4644** cosine similarity)[cite: 4].
 ## Workflow
 
 ```text
