@@ -18,7 +18,14 @@ The project demonstrates how patterns, similarities, communities, or anomalies c
 A deterministic normal-behavior dataset with rare injected stress cases is generated inside the notebook. Scenario flags are excluded from training.
 
 The notebook documents its data contract, reproducible seed, quality checks, and any synthetic proxy labels used only for retrospective diagnostics.
+## Key Results
 
+- **Dataset & Features:** Evaluated across **1,000 telemetry windows** (960 normal, 40 injected stress scenarios) tracking 6 operational features: `input_tokens`, `output_tokens`, `latency_seconds`, `tool_calls`, `retry_count`, and `estimated_cost_usd`[cite: 2].
+- **Model Comparison (Retrospective Diagnostics):**
+  - **Isolation Forest** (`n_estimators=240`, `contamination=0.04` with `RobustScaler`): Achieved **1.0000** Precision, Recall, F1-score, and ROC-AUC[cite: 2].
+  - **Local Outlier Factor** (`n_neighbors=35`, `contamination=0.04`): Achieved **0.1941** ROC-AUC (`0.0000` F1), highlighting how dense burst anomalies evade local neighborhood density checks[cite: 2].
+- **Root-Cause Attribution:** Median Absolute Deviation (MAD) scoring ranked top drivers per alert, isolating `retry_count` spikes up to **27.84x robust deviation** above baseline medians[cite: 2].
+  
 ## Workflow
 
 ```text
