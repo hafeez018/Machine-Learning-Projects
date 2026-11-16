@@ -74,18 +74,10 @@ Metrics for fraud detection:
 
 ```
 Vehicle-Insurance-Claim-Fraud-Detection/
-│── data/
-│   ├── raw/
-│   └── processed/
-│── notebooks/
-│   └── fraud_detection_analysis.ipynb
-│── src/
-│   ├── preprocess.py
-│   ├── feature_engineering.py
-│   ├── model.py
-│   └── evaluate.py
+│── datasets.txt
+│──Vehicle_Insurance_Claim.ipynb.ipynb
 │── README.md
-│── requirements.txt
+
 ```
 
 ---
